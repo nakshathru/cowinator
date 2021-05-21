@@ -38,9 +38,10 @@ export const styles = css`
     align-items: center;
     flex-direction: column;
     width: 100%;
-    margin-top: 55px;
+    margin-top: 35px;
   }
   .input_box {
+    z-index: 1000;
     width: 90%;
     max-width: 400px;
     display: flex;
@@ -85,6 +86,7 @@ export const styles = css`
     font-weight: 450;
     line-height: 3;
     color: #969696;
+    z-index: 1000;
   }
 
   .button {
@@ -140,8 +142,8 @@ export const styles = css`
 }
  .switch__circle {
 	 position: absolute;
-	 width: 500px;
-	 height: 500px;
+	 width: 400px;
+	 height: 400px;
 	 border-radius: 50%;
 	 background-color: #ecf0f3;
 	 box-shadow: inset 8px 8px 12px #d1d9e6, inset -8px -8px 12px #f9f9f9;
@@ -150,7 +152,7 @@ export const styles = css`
 	 transition: 1.25s;
 }
  .switch__circle--t {
-	 top: -30%;
+	 top: -40%;
 	 left: 60%;
 	 width: 300px;
 	 height: 300px;
