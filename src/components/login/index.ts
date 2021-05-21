@@ -1,65 +1,84 @@
-/**
- * @license
- * Copyright 2019 Google LLC
- * SPDX-License-Identifier: BSD-3-Clause
- */
+import {LitElement, html} from 'lit';
+import {customElement, property} from 'lit/decorators.js';
+import {classMap} from 'lit/directives/class-map.js';
+import {styles} from './styles';
+import {Router} from '@vaadin/router'
+@customElement('lit-login')
+export class LitLogin extends LitElement {
+  static styles = styles;
 
- import {LitElement, html, css} from 'lit';
- import {customElement, property} from 'lit/decorators.js';
- 
- /**
-  * An example element.
-  *
-  * @slot - This element has a slot
-  * @csspart button - The button
-  */
- @customElement('login-phone')
- export class LoginPhone extends LitElement {
-   static styles = css`
-     :host {
-       display: block;
-       border: solid 1px gray;
-       padding: 16px;
-       max-width: 800px;
-     }
-   `;
- 
-   /**
-    * The name to say "Hello" to.
-    */
-   @property()
-   name = 'World';
- 
-   /**
-    * The number of times the button has been clicked.
-    */
-   @property({type: Number})
-   count = 0;
- 
-   render() {
-     return html`
-       <h1>Hello hhiidsi, ${this.name}!</h1>
-       <a href="/">Home</a>
-        <a class="active" href="/login">Login</a>
-       <button @click=${this._onClick} part="button">
-         Click Count: ${this.count}
-       </button>
-       <slot></slot>
-     `;
-   }
- 
-   private _onClick() {
-     this.count++;
-   }
- 
-   foo(): string {
-     return 'foo';
-   }
- }
- 
- declare global {
-   interface HTMLElementTagNameMap {
-     'login-phone': LoginPhone;
-   }
- }
- 
+  @property()
+  phoneNumber = '';
+
+  @property({type: Boolean})
+  isPhoneValid = false;
+
+  @property({type: Object})
+  classes = {
+    input: {hideInputError: true, formInputError: true},
+    button: {button: true, disabledButton: false}
+  }
+  
+  connectedCallback(){
+    super.connectedCallback()
+    this.phoneNumber = sessionStorage.getItem('phone_no') || ''
+    if(this.phoneNumber){
+      Router.go('/')
+    }
+  }
+
+  disconnectedCallback(){
+    super.disconnectedCallback()
+    this.phoneNumber = ''
+  }
+
+  render() {    
+    return html`
+      <div class="main">
+        <div class="container">
+          <div class="switch__circle"></div>
+          <div class="switch__circle switch__circle--t"></div>
+          <form class="form" onsubmit="return false;" autocomplete="off">
+            <h2 class="form_title title">Cowinator</h2>
+            <div class="input_box">
+              <span class="prefix">+91</span>
+              <input
+                id="phone_no"
+                @keyup=${this._onChange}
+                class="formInput"
+                type="tel"
+                placeholder="Phone"
+                maxlength="10"
+              />
+            </div>
+            <div class=${classMap(this.classes.input)} >Oops!</div>
+            <button class=${classMap(this.classes.button)} @click=${this._onClick}>SIGN IN</button>
+          </form>
+        </div>
+      </div>
+    `;
+  }
+
+  private _onChange(event: any) {    
+    const currentValue = event.target.value || '';
+    if (currentValue != this.phoneNumber) {
+      this.phoneNumber = currentValue;
+      this.isPhoneValid = /^((6|7|8|9)\d{9})$/.test(this.phoneNumber);
+      this.classes.input.hideInputError = this.isPhoneValid
+      this.classes.button.disabledButton = !this.isPhoneValid
+    }
+  }
+
+  private _onClick() {
+    if(this.isPhoneValid){
+      sessionStorage.setItem('phone_no',this.phoneNumber)
+      Router.go('/')
+    }
+  }
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'lit-login': LitLogin;
+  }
+}

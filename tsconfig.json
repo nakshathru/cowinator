@@ -5,8 +5,6 @@
     "lib": ["es2020", "DOM", "DOM.Iterable"],
     "declaration": true,
     "declarationMap": true,
-    "sourceMap": true,
-    "inlineSources": true,
     "outDir": "build",
     "rootDir": "src",
     "strict": true,

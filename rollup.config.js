@@ -2,11 +2,19 @@ import summary from 'rollup-plugin-summary';
 import {terser} from 'rollup-plugin-terser';
 import resolve from '@rollup/plugin-node-resolve';
 import replace from '@rollup/plugin-replace';
+import typescript from '@rollup/plugin-typescript';
+import copy from 'rollup-plugin-copy';
 
-export default {
-  input: 'my-element.js',
+const copyConfig = {
+  targets: [
+    { src: 'public/index.html', dest: 'build', rename: 'index.html' }
+  ],
+};
+
+const config = {
+  input: 'src/router.ts',
   output: {
-    file: 'my-element.bundled.js',
+    dir: 'build',
     format: 'esm',
   },
   onwarn(warning) {
@@ -15,8 +23,13 @@ export default {
     }
   },
   plugins: [
-    replace({'Reflect.decorate': 'undefined'}),
+    typescript(),
+    replace({
+      'preventAssignment': true,
+      'Reflect.decorate': 'undefined'
+    }),
     resolve(),
+    copy(copyConfig),
     terser({
       ecma: 2017,
       module: true,
@@ -30,3 +43,6 @@ export default {
     summary(),
   ],
 };
+
+
+export default config
