@@ -7,7 +7,7 @@
   "module": "cowin-app.js",
   "type": "module",
   "scripts": {
-    "build": "rimraf build && rollup -c rollup.config.js",
+    "build": "yarn && rimraf build && rollup -c rollup.config.js",
     "build:watch": "rimraf build && tsc --watch",
     "lint": "npm run lint:lit-analyzer && npm run lint:eslint",
     "lint:eslint": "eslint 'src/**/*.ts'",
