@@ -21,7 +21,7 @@ export class HomeModule extends LitElement {
   }
   disconnectedCallback() {
     super.disconnectedCallback();
-    this.style.width='auto'
+    this.style.all='unset'
   }
 
   render() {

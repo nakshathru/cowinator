@@ -23,7 +23,7 @@ import { Router } from "@vaadin/router";
 
   disconnectedCallback(){
     super.disconnectedCallback()
-    this.style.width='auto'
+    this.style.all='unset'
   }
 
    render() {
