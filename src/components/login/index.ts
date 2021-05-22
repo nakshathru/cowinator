@@ -19,19 +19,6 @@ export class LitLogin extends LitElement {
     button: {button: true, disabledButton: false}
   }
   
-  connectedCallback(){
-    super.connectedCallback()
-    this.phoneNumber = sessionStorage.getItem('phone_no') || ''
-    if(this.phoneNumber){
-      Router.go('/')
-    }
-  }
-
-  disconnectedCallback(){
-    super.disconnectedCallback()
-    this.phoneNumber = ''
-  }
-
   render() {    
     return html`
       <div class="main">

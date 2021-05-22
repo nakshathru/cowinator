@@ -1,17 +1,36 @@
 import '../../components/dashboard';
 import {LitElement, html} from 'lit';
-import {customElement} from 'lit/decorators.js';
+import {customElement, property} from 'lit/decorators.js';
 import { styles } from './styles';
+import { Router } from '@vaadin/router';
 @customElement('home-module')
-export class LoginModule extends LitElement {
+export class HomeModule extends LitElement {
   static styles = styles
 
-  render() {
-    return html` <lit-dashboard></lit-dashboard> `;
+  @property()
+  phoneNumber = '';
+  
+  connectedCallback() {
+    super.connectedCallback();
+    this.phoneNumber = sessionStorage.getItem('phone_no') || '';
+    console.log('check here from dashboard', this.phoneNumber);
+    if (!this.phoneNumber) {
+      Router.go('/login');
+      this.disconnectedCallback();
+    }
   }
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this.style.width='auto'
+  }
+
+  render() {
+    return html` 
+      <lit-dashboard></lit-dashboard> 
+  `}
 }
 declare global {
   interface HTMLElementTagNameMap {
-    'home-module': LoginModule;
+    'home-module': HomeModule;
   }
 }

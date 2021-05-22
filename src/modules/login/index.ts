@@ -1,12 +1,31 @@
 
  import "../../components/login";
  import {LitElement, html } from 'lit';
- import {customElement} from 'lit/decorators.js';
+ import {customElement, property} from 'lit/decorators.js';
  import { styles } from "./styles";
+import { Router } from "@vaadin/router";
 
  @customElement('login-module')
  export class LoginModule extends LitElement {
    static styles = styles
+
+   @property()
+   phoneNumber = '';
+   
+   connectedCallback(){
+    super.connectedCallback()
+    this.phoneNumber = sessionStorage.getItem('phone_no') || ''
+    if(this.phoneNumber){
+      Router.go('/')
+      this.disconnectedCallback();
+    }
+  }
+
+  disconnectedCallback(){
+    super.disconnectedCallback()
+    this.style.width='auto'
+  }
+
    render() {
      return html`
      <lit-login></lit-login>
